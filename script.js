@@ -96,18 +96,25 @@ const calcDisplaySummary = function(acc) {
   .reduce((acc,mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}$`;
 
+  // calculating for the outgoing money
   const out = acc.movements 
+  // filtering the amount that are negatives
     .filter(mov => mov < 0)
+    // then reducing it
     .reduce((acc,mov) => acc + mov, 0);
     labelSumOut.textContent = `${Math.abs(out)}.00$`;
 
-
+// calculate the interest rate
+// pays out an interest everytime there is a deposit(to practice filtering and reducing--- purposes)
     const interest = acc.movements
       .filter(mov => mov > 0)
+      // creating a map to hold all of the interest
       .map(deposit => (deposit * acc.interestRate) / 100)
+      //making sure to pay interest if the interest is at least 1 dollar to then add it together
       .filter((int, i, arr) => {
         return int >= i;
       })
+      // adding the interest rate together
       .reduce((acc,int) => acc + int, 0);
       labelSumInterest.textContent = `${interest}.00$`;
 };
@@ -136,15 +143,16 @@ const updateUI = function(acc){
     calcDisplaySummary(acc);
 }
 
-//initializing the variable
+//initializing the variable to use late to manipulate the current user
 let currentAccount;
-//event handler when the login button is click
+//event handler when the login button is click by dfeault form also uses the enter key
 btnLogin.addEventListener("click", function(e){
-  //prevent form from submitting
+  //prevent the page from realoding since it is a form
   e.preventDefault();
 
-  
+  // finding  the current account
 currentAccount= accounts.find(
+  // if the input matches the usernameLogin (value)
   acc => acc.username ===
    inputLoginUsername.value);
 
@@ -199,9 +207,73 @@ btnTransfer.addEventListener("click", function(e) {
   updateUI(currentAccount);
 
     }
+});
+
+btnLoan.addEventListener("click", function(e){
+  e.preventDefault();
+  
+  const amount = Number(inputLoanAmount.value);
+
+  if(amount > 0 && currentAccount.movements.some(
+    mov => mov >= amount / 10)){
+      //add the movement
+      currentAccount.movements.push(amount)
+
+      //update the ui
+      updateUI(currentAccount);
+    }
+
+    //clear the input file
+    inputLoanAmount.value = '';
 })
+
+
+btnClose.addEventListener("click", function(e){
+  e.preventDefault();
+
+
+
+  if(inputCloseUsername .value === currentAccount.username
+    && Number(inputClosePin.value) === currentAccount.pin)
+    {
+      // calculate the index to to either return true or false
+      const index = accounts.findIndex(acc => acc.username
+        === currentAccount.username);
+        console.log(index)
+      
+        // delete acount
+      accounts.splice(index, 1);
+
+      //hidden UI
+      containerApp.style.opacity = 0;
+    }
+
+    inputCloseUsername.value = inputClosePin.value = '';
+});
 
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+console.log(movements)
+console.log(movements.includes(-130));
 
+// some
+console.log(movements.some(mov => mov === -130))
+// checking to see if there are postive number in the array
+
+const anyDeposit = movements.some(mov => 1500);
+console.log(anyDeposit);
+
+
+// every
+console.log(movements.every(mov => 0));
+console.log(account4.movements.every(mov => 0));
+
+
+// separate cancelIdleCallback
+
+const deposit = mov >= mov > 0;
+
+console.log(movements.some(deposit));
+console.log(movements.every(deposit))
+console.log(movements.filter(deposit));
