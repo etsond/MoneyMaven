@@ -82,7 +82,6 @@ const displayMovements = function(movements) {
 
 //displaying the balance function
 const calcDisplayBalance = function (acc) {
-  //
   acc.balance = acc.movements.reduce((acc, mov) => 
   acc + mov, 0);
   // acc.abalance = balance; 
@@ -226,28 +225,29 @@ btnLoan.addEventListener("click", function(e){
     //clear the input file
     inputLoanAmount.value = '';
 })
-
+//button close 
 
 btnClose.addEventListener("click", function(e){
+  // preventig the default to not reload
   e.preventDefault();
 
-
-
+  // TODO check if the credential are corrent
   if(inputCloseUsername .value === currentAccount.username
     && Number(inputClosePin.value) === currentAccount.pin)
     {
-      // calculate the index to to either return true or false
+      // calculate the index to delete
       const index = accounts.findIndex(acc => acc.username
         === currentAccount.username);
         console.log(index)
       
-        // delete acount
+        //TODO  delete current acount and remove 1 element
       accounts.splice(index, 1);
 
       //hidden UI
       containerApp.style.opacity = 0;
     }
 
+    // setting the stirng to empty after rm the user
     inputCloseUsername.value = inputClosePin.value = '';
 });
 
