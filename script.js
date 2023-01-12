@@ -1,6 +1,6 @@
 'use strict';
 
-// setting simple user account
+// setting hard coded user accounts
 const account1 = {
   owner: 'Etson Dorival',
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
@@ -59,10 +59,14 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 //displaying the movements
-const displayMovements = function(movements) {
+// adding the second paramenter to see wherethere or not the movement was false
+const displayMovements = function(movements, sort = false) {
   containerMovements.innerHTML = '';
   
-  movements.forEach(function(mov, i){
+  // taking a copy of the movements and sort it and not sort the new array
+  const movs = sort ? movements.slice().sort((a, b)=> a - b) : movements;
+
+  movs.forEach(function(mov, i){
     const type = mov > 0? 'deposit': 'withdrawal';
     
     const html = `
@@ -207,25 +211,28 @@ btnTransfer.addEventListener("click", function(e) {
 
     }
 });
-
+// Taking a loan
 btnLoan.addEventListener("click", function(e){
   e.preventDefault();
   
+  //converting the value of the inputLoann to a number
   const amount = Number(inputLoanAmount.value);
 
+  // amount cannot be less than zeo, 
+  // accept  request if currentAmount is >= 10 Percent of the amount 
   if(amount > 0 && currentAccount.movements.some(
-    mov => mov >= amount / 10)){
-      //add the movement
+    mov => mov >= amount * 0.1)){
+      //add the amount
       currentAccount.movements.push(amount)
 
       //update the ui
       updateUI(currentAccount);
     }
 
-    //clear the input file
+    //TODO clea the input field 
     inputLoanAmount.value = '';
 })
-//button close 
+//button close event listner to listen for a click
 
 btnClose.addEventListener("click", function(e){
   // preventig the default to not reload
@@ -250,30 +257,55 @@ btnClose.addEventListener("click", function(e){
     // setting the stirng to empty after rm the user
     inputCloseUsername.value = inputClosePin.value = '';
 });
+// creatin new varibale for the sorted states throught the clciks
+
+let sorted = 0;
+//sorting the amount everytime user click button
+btnSort.addEventListener("click", function(e) {
+  e.preventDefault();
+
+
+  /*  does not work because varibale remains unchange ---- reminder---- look into sorted func*/ 
+  // displayMovements(currentAccount.movements, true);
+  // // flippin it afte the flip
+
+  // sorted = !sorted;
+
+  sorted ++;
+
+  if(sorted % 2 == 0){
+    currentAccount.movements.sort((a, b) => a - b);
+  }else {
+    currentAccount.movements.sort((a , b) => b - a);
+  }
+
+  // update UI
+  updateUI(currentAccount);
+})
 
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-console.log(movements)
-console.log(movements.includes(-130));
+// console.log(movements)
+// console.log(movements.includes(-130));
 
-// some
-console.log(movements.some(mov => mov === -130))
-// checking to see if there are postive number in the array
+// // some
+// console.log(movements.some(mov => mov === -130))
+// // checking to see if there are postive number in the array
 
-const anyDeposit = movements.some(mov => 1500);
-console.log(anyDeposit);
-
-
-// every
-console.log(movements.every(mov => 0));
-console.log(account4.movements.every(mov => 0));
+// const anyDeposit = movements.some(mov => 1500);
+// console.log(anyDeposit);
 
 
-// separate cancelIdleCallback
+// // every
+// console.log(movements.every(mov => 0));
+// console.log(account4.movements.every(mov => 0));
 
-const deposit = mov >= mov > 0;
 
-console.log(movements.some(deposit));
-console.log(movements.every(deposit))
-console.log(movements.filter(deposit));
+// // separate cancelIdleCallback
+
+// const deposit = mov >= mov > 0;
+
+// console.log(movements.some(deposit));
+// console.log(movements.every(deposit))
+// console.log(movements.filter(deposit));
