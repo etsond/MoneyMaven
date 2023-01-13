@@ -86,16 +86,17 @@ const displayMovements = function(movements, sort = false) {
   movs.forEach(function(mov, i){
     const type = mov > 0? 'deposit': 'withdrawal';
 
-    const date = new Date(acc.movementsDates[i]);
-    const day = `${date.getDate()}`;
-    const month = `${date.getMonth() + 1}`;
-    const year = `${date.getFullYear()}`;
-    const displayDate = `${month}/${day}/${year}`;
+    // const date = new Date(acc.movementsDates[i]);
+    // const day = `${date.getDate()}`;
+    // const month = `${date.getMonth() + 1}`;
+    // const year = `${date.getFullYear()}`;
+    // const displayDate = `${month}/${day}/${year}`;
+    //    <div class="movements__value">${displayDate}</div>
     
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${ i + 1} ${type}</div>
-        <div class="movements__value">${displayDate}</div>
+     
         <div class="movements__value">${mov.toFixed(2)}</div>
        
           
