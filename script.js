@@ -3,33 +3,47 @@
 // setting hard coded user accounts
 const account1 = {
   owner: 'Etson Dorival',
-  movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movements: [200, 450, -400, 300_0, -650, -130, 70, 130_0],
   interestRate: 1.2, // %
-  pin: 1111,
+  pin: 111_1,
+
+   movementsDates: [
+    '2019-11-18T21:31:17.178Z',
+    '2019-12-23T07:42:02.383Z',
+    '2020-01-28T09:15:04.904Z',
+    '2020-04-01T10:17:24.185Z',
+    '2020-05-08T14:11:59.604Z',
+    '2020-05-27T17:01:17.194Z',
+    '2020-07-11T23:36:17.929Z',
+    '2020-07-12T10:51:36.790Z',
+  ],
+  currency: 'EUR',
+  locale: 'pt-PT', // de-DE
 };
+
 
 const account2 = {
   owner: 'Jess Brown',
-  movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movements: [500_0, 340_0, -150, -790, -321_0, -100_0, 850_0, -30],
   interestRate: 1.5,
-  pin: 2222,
+  pin: 222_2,
+
+   movementsDates: [
+    '2019-11-01T13:15:33.035Z',
+    '2019-11-30T09:48:16.867Z',
+    '2019-12-25T06:04:23.907Z',
+    '2020-01-25T14:18:46.235Z',
+    '2020-02-05T16:33:06.386Z',
+    '2020-04-10T14:43:26.374Z',
+    '2020-06-25T18:49:59.371Z',
+    '2020-07-26T12:01:20.894Z',
+  ],
+  currency: 'USD',
+  locale: 'en-US',
 };
 
-const account3 = {
-  owner: 'Hailey Suzan ',
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
-  interestRate: 0.7,
-  pin: 3333,
-};
 
-const account4 = {
-  owner: 'Sarah Smith',
-  movements: [430, 1000, 700, 50, 90],
-  interestRate: 1,
-  pin: 4444,
-};
-
-const accounts = [account1, account2, account3, account4];
+const accounts = [account1, account2 ]
 
 // selting the element using class and storing them in a const
 const labelWelcome = document.querySelector('.welcome');
@@ -64,18 +78,27 @@ const displayMovements = function(movements, sort = false) {
   containerMovements.innerHTML = '';
   
   // taking a copy of the movements and sort it and not sort the new array
-  const movs = sort ? movements.slice().sort((a, b)=> a - b) : movements;
+  const movs = sort 
+  ? movements.slice().sort((a, b)=> a - b) 
+  : movements;
 
+  // looping over----- after each iterato
   movs.forEach(function(mov, i){
     const type = mov > 0? 'deposit': 'withdrawal';
+
+    const date = new Date(acc.movementsDates[i]);
+    const day = `${date.getDate()}`;
+    const month = `${date.getMonth() + 1}`;
+    const year = `${date.getFullYear()}`;
+    const displayDate = `${month}/${day}/${year}`;
     
     const html = `
       <div class="movements__row">
-          <div class="movements__type 
-        movements__type--${type}">${
-          i + 1
-        } ${type}</div>
-          <div class="movements__value">${mov}</div>
+        <div class="movements__type movements__type--${type}">${ i + 1} ${type}</div>
+        <div class="movements__value">${displayDate}</div>
+        <div class="movements__value">${mov.toFixed(2)}</div>
+       
+          
         </div>
     `;
     // create string in html
@@ -146,6 +169,9 @@ const updateUI = function(acc){
     calcDisplaySummary(acc);
 }
 
+
+
+
 //initializing the variable to use late to manipulate the current user
 let currentAccount;
 //event handler when the login button is click by dfeault form also uses the enter key
@@ -170,13 +196,25 @@ currentAccount= accounts.find(
     }`;
     //container app has the app class
     containerApp.style.opacity = 100;
+
+
+    // create current date
+// showing the month, day and year
+const now = new Date();
+const day = now.getDate();
+// starting at zero so adding one
+const month =now.getMonth() + 1;
+const year = now.getFullYear();
+const hour = now.getHours()
+const minutes = now.getMinutes()
+labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minutes}`;
+
+
   //clear input fileds
   inputLoginUsername.value = inputLoginPin.value = 
   '';
 
   inputLoginPin.blur();
-
-   
 
     updateUI(currentAccount)
   }
@@ -206,6 +244,11 @@ btnTransfer.addEventListener("click", function(e) {
   currentAccount.movements.push(-amount);
   receiverAcc.movements.push(amount);
 
+  // add the current date to the transfer
+
+  currentAccount.movementsDates.push(new Date().toISOString());
+   receiverAcc.movementsDates.push(new Date().toISOString());
+
   //update the UI
   updateUI(currentAccount);
 
@@ -224,6 +267,10 @@ btnLoan.addEventListener("click", function(e){
     mov => mov >= amount * 0.1)){
       //add the amount
       currentAccount.movements.push(amount)
+
+        // add the current date to the transfer
+
+  currentAccount.movementsDates.push(new Date().toISOString());
 
       //update the ui
       updateUI(currentAccount);
@@ -267,7 +314,7 @@ btnSort.addEventListener("click", function(e) {
 
   /*  does not work because varibale remains unchange ---- reminder---- look into sorted func*/ 
   // displayMovements(currentAccount.movements, true);
-  // // flippin it afte the flip
+  // // flippin it after thef flip
 
   // sorted = !sorted;
 
@@ -284,28 +331,4 @@ btnSort.addEventListener("click", function(e) {
 })
 
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-// console.log(movements)
-// console.log(movements.includes(-130));
-
-// // some
-// console.log(movements.some(mov => mov === -130))
-// // checking to see if there are postive number in the array
-
-// const anyDeposit = movements.some(mov => 1500);
-// console.log(anyDeposit);
-
-
-// // every
-// console.log(movements.every(mov => 0));
-// console.log(account4.movements.every(mov => 0));
-
-
-// // separate cancelIdleCallback
-
-// const deposit = mov >= mov > 0;
-
-// console.log(movements.some(deposit));
-// console.log(movements.every(deposit))
-// console.log(movements.filter(deposit));
