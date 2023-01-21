@@ -206,8 +206,8 @@ const day = now.getDate();
 // starting at zero so adding one
 const month =now.getMonth() + 1;
 const year = now.getFullYear();
-const hour = now.getHours()
-const minutes = now.getMinutes()
+const hour = `${now.getHours()}`.padStart(2, 0);
+const minutes = `${now.getMinutes()}`.padStart(2, 0);
 labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minutes}`;
 
 
@@ -255,6 +255,7 @@ btnTransfer.addEventListener("click", function(e) {
 
     }
 });
+
 // Taking a loan
 btnLoan.addEventListener("click", function(e){
   e.preventDefault();
@@ -270,8 +271,7 @@ btnLoan.addEventListener("click", function(e){
       currentAccount.movements.push(amount)
 
         // add the current date to the transfer
-
-  currentAccount.movementsDates.push(new Date().toISOString());
+      currentAccount.movementsDates.push(new Date().toISOString());
 
       //update the ui
       updateUI(currentAccount);
@@ -305,8 +305,7 @@ btnClose.addEventListener("click", function(e){
     // setting the stirng to empty after rm the user
     inputCloseUsername.value = inputClosePin.value = '';
 });
-// creatin new varibale for the sorted states throught the clciks
-
+// creatin new varibale for the sorted states throught the clicks
 let sorted = 0;
 //sorting the amount everytime user click button
 btnSort.addEventListener("click", function(e) {
