@@ -89,9 +89,7 @@ const formatMovementDate = function(Date){
                 const year = `${date.getFullYear()}`;
                   return `${month}/${day}/${year}`;
           }  //  <div class="movements__value">${displayDate}</div>
-
 };
-
 //displaying the movements
 // adding the second paramenter to see wherethere or not the movement was false
 const displayMovements = function(acc, sort = false) {
@@ -195,49 +193,44 @@ const updateUI = function(acc){
 
 //initializing the variable to use late to manipulate the current user
 let currentAccount;
+
 //event handler when the login button is click by dfeault form also uses the enter key
 btnLogin.addEventListener("click", function(e){
   //prevent the page from realoding since it is a form
   e.preventDefault();
-
   // finding  the current account
 currentAccount= accounts.find(
   // if the input matches the usernameLogin (value)
   acc => acc.username ===
    inputLoginUsername.value);
-
    console.log(currentAccount);
-
    //using chain property to see if the account is exists
   if(currentAccount?.pin === Number(inputLoginPin.value))
   {
     //display the UI and welcome message if it is a match
     labelWelcome.textContent= `welcome back, ${
-      currentAccount.owner.split(' ')[0]
+    currentAccount.owner.split(' ')[0]
     }`;
     //container app has the app class
     containerApp.style.opacity = 100;
-
-
     // create current date
 // showing the month, day and year
 const now = new Date();
 const day = now.getDate();
+
 // starting at zero so adding one
 const month =now.getMonth() + 1;
 const year = now.getFullYear();
 const hour = `${now.getHours()}`.padStart(2, 0);
 const minutes = `${now.getMinutes()}`.padStart(2, 0);
 labelDate.textContent = `${month}/${day}/${year}, ${hour}:${minutes}`;
-
-
+ 
   //clear input fileds
-  inputLoginUsername.value = inputLoginPin.value = 
-  '';
-
+  inputLoginUsername.value = inputLoginPin.value = '';
   inputLoginPin.blur();
 
-    updateUI(currentAccount)
+  // update UI
+  updateUI(currentAccount)
   }
 });
 
