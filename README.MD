@@ -1,4 +1,4 @@
-# Bank App
+# MoneyMaven
 A JavaScript tutorial with added features that simulates a simple banking application. The program allows users to create accounts, deposit and withdraw funds, and view their account balance.
 
 ## Installation
